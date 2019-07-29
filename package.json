@@ -1,0 +1,25 @@
+{
+  "name": "url-shortify",
+  "version": "1.0.0",
+  "description": "URL shortener to reduce long link",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yuzumi/url-shortify.git"
+  },
+  "keywords": [
+    "url-shortener",
+    "node",
+    "express",
+    "typescript"
+  ],
+  "author": "Bogdan Morozyuk",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/yuzumi/url-shortify/issues"
+  },
+  "homepage": "https://github.com/yuzumi/url-shortify#readme"
+}
