@@ -1,0 +1,7 @@
+{
+  "port": 5000,
+  "database": {
+    "url": "mongodb://localhost:27017/",
+    "name": "url-shortify"
+  }
+}
