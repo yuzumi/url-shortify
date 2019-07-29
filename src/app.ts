@@ -1,26 +1,21 @@
 import express, { Application } from 'express';
-import dotenv from 'dotenv';
+import config from 'config';
 
-import connectToDatabase from './database/connect';
+import connectToDatabase, { IDatabaseConnectionConfig } from './database/connect';
 import UrlRouter from './routes/url';
-
-dotenv.config();
 
 const app: Application = express();
 
-const { 
-  PORT = 5000,
-  DATABASE_URL,
-  DATABASE_NAME,  
-} = process.env;
+const port: number | string = process.env.PORT || config.get('port') || 5000;
+const database: IDatabaseConnectionConfig = config.get('database');
 
-connectToDatabase(`${DATABASE_URL}${DATABASE_NAME}`);
+connectToDatabase(database);
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 app.use('/', UrlRouter);
 
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+app.listen(port, () => {
+  console.log(`Server running on port ${port}`);
 });
