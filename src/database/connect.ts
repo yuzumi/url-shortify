@@ -1,16 +1,23 @@
 import mongoose from 'mongoose';
 
-const connectToDatabase = async (uri: string): Promise<void> => {
+export interface IDatabaseConnectionConfig {
+  url: string;
+  name: string;
+};
+
+export const buildUri = (config: IDatabaseConnectionConfig): string => {
+  return `${config.url}${config.name}`;
+};
+
+export default async function connect(config: IDatabaseConnectionConfig): Promise<void> {
   try {
-    await mongoose.connect(uri, {
-      useNewUrlParser: true
-    });
+    const uri: string = buildUri(config);
+
+    await mongoose.connect(uri, { useNewUrlParser: true });
 
     console.log('Database connected');
   } catch (error) {
     console.error(error.message);
-    process.exit(1);
+    process.exit(1);    
   }
 };
-
-export default connectToDatabase;
