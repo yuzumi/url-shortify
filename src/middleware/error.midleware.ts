@@ -14,7 +14,7 @@ export default function errorMiddleware(
 
   res
     .status(status)
-    .send({
+    .json({
       status,
       message
     });
