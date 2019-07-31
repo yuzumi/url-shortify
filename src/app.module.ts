@@ -17,8 +17,8 @@ export default class App {
 
     this.connectToDatabase();
     this.initializeMiddleware();
-    this.initializeErrorHandling();
     this.initializeControllers(controllers);
+    this.initializeErrorHandling();
   }
 
   private initializeMiddleware(): void {
