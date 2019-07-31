@@ -1,9 +1,10 @@
-import { Request, Response, Router } from 'express';
+import { Request, Response, NextFunction, Router } from 'express';
 import validUrl from 'valid-url';
 import shortId from 'shortid';
 
 import Url, { IUrlModel } from '../models/url.model';
 import Controller from '../interfaces/controller.interface';
+import HttpException from '../exceptions/HttpException';
 
 class UrlController implements Controller {
   readonly path: string = '/';
@@ -18,7 +19,7 @@ class UrlController implements Controller {
     this.router.post('/shorten', this.shortify);
   }
 
-  private async getByCode(req: Request, res: Response): Promise<Response | void> {
+  private async getByCode(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
     const { code } = req.params;
 
     try {
@@ -27,16 +28,16 @@ class UrlController implements Controller {
       if (url && url.long) {
         return res.redirect(url.long);
       } else {
-        return res.status(404).json('No url found');
+        return next(new HttpException(404, 'No url found'));
       }
     } catch (error) {
       console.error(error);
 
-      res.status(500).json('Server error');
+      next(new HttpException(500, 'Server error'));
     }
   }
 
-  private async shortify(req: Request, res: Response): Promise<void> {
+  private async shortify(req: Request, res: Response, next: NextFunction): Promise<void> {
     const { long } = req.body;
   
     if (validUrl.isUri(long)) {
@@ -57,10 +58,11 @@ class UrlController implements Controller {
         }
       } catch (error) {
         console.error(error);
-        res.status(500).json('Server error');
+
+        next(new HttpException(500, 'Server error'));
       }
     } else {
-      res.status(401).json('Invalid long url');
+      next(new HttpException(401, 'Invalid long url'));
     }
   }
 }
