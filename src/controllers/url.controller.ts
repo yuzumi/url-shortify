@@ -4,7 +4,10 @@ import shortId from 'shortid';
 
 import Url, { IUrlModel } from '../models/url.model';
 import Controller from '../interfaces/controller.interface';
-import HttpException from '../exceptions/HttpException';
+
+import ServerError from '../exceptions/ServerError';
+import UrlNotFoundException from '../exceptions/UrlNotFoundException';
+import UrlIsNotValidException from '../exceptions/UrlIsNotValidException';
 
 class UrlController implements Controller {
   readonly path: string = '/';
@@ -28,12 +31,12 @@ class UrlController implements Controller {
       if (url && url.long) {
         return res.redirect(url.long);
       } else {
-        return next(new HttpException(404, 'No url found'));
+        return next(new UrlNotFoundException());
       }
     } catch (error) {
       console.error(error);
 
-      next(new HttpException(500, 'Server error'));
+      next(new ServerError());
     }
   }
 
@@ -59,10 +62,10 @@ class UrlController implements Controller {
       } catch (error) {
         console.error(error);
 
-        next(new HttpException(500, 'Server error'));
+        next(new ServerError());
       }
     } else {
-      next(new HttpException(401, 'Invalid long url'));
+      next(new UrlIsNotValidException());
     }
   }
 }
