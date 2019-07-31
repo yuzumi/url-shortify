@@ -1,11 +1,24 @@
-import { Request, Response } from 'express';
+import { Request, Response, Router } from 'express';
 import validUrl from 'valid-url';
 import shortId from 'shortid';
 
-import Url, { IUrlModel } from '../models/url';
+import Url, { IUrlModel } from '../models/url.model';
+import Controller from '../interfaces/controller.interface';
 
-const UrlController = {
-  async getByCode(req: Request, res: Response) {
+class UrlController implements Controller {
+  readonly path: string = '/';
+  readonly router: Router = Router();
+
+  constructor() {
+    this.initializeRoutes();
+  }
+
+  private initializeRoutes(): void {
+    this.router.get('/:code', this.getByCode);
+    this.router.post('/shorten', this.shortify);
+  }
+
+  private async getByCode(req: Request, res: Response): Promise<Response | void> {
     const { code } = req.params;
 
     try {
@@ -21,8 +34,9 @@ const UrlController = {
 
       res.status(500).json('Server error');
     }
-  },
-  async shortify(req: Request, res: Response) {
+  }
+
+  private async shortify(req: Request, res: Response): Promise<void> {
     const { long } = req.body;
   
     if (validUrl.isUri(long)) {
@@ -49,6 +63,6 @@ const UrlController = {
       res.status(401).json('Invalid long url');
     }
   }
-};
+}
 
 export default UrlController;
