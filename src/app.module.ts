@@ -3,6 +3,8 @@ import config from 'config';
 import mongoose from 'mongoose';
 
 import loggerMiddleware from './middleware/logger.middleware';
+import errorMiddleware from './middleware/error.midleware';
+
 import Controller from './interfaces/controller.interface';
 
 export default class App {
@@ -15,6 +17,7 @@ export default class App {
 
     this.connectToDatabase();
     this.initializeMiddleware();
+    this.initializeErrorHandling();
     this.initializeControllers(controllers);
   }
 
@@ -23,6 +26,10 @@ export default class App {
     this.app.use(express.urlencoded({ extended: false }));
 
     this.app.use(loggerMiddleware);
+  }
+
+  private initializeErrorHandling() {
+    this.app.use(errorMiddleware);
   }
 
   private initializeControllers(controllers: Controller[]): void {
