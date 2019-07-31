@@ -2,10 +2,10 @@
   "name": "url-shortify",
   "version": "1.0.0",
   "description": "URL shortener to reduce long link",
-  "main": "app.js",
+  "main": "server.js",
   "scripts": {
-    "start": "node dist/app.js",
-    "dev": "nodemon src/app.ts",
+    "start": "node dist/server.js",
+    "dev": "nodemon src/server.ts",
     "build": "tsc -p ."
   },
   "repository": {
