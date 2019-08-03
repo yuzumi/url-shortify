@@ -2,7 +2,7 @@ import express, { Application } from 'express';
 import config from 'config';
 import mongoose from 'mongoose';
 
-import loggerMiddleware from './middleware/logger.middleware';
+import requestLoggerMiddleware from './middleware/requestLogger.middleware';
 import errorHandlerMiddleware from './middleware/errorHandler.midleware';
 
 import Controller from './interfaces/controller.interface';
@@ -25,7 +25,7 @@ export default class App {
     this.app.use(express.json());
     this.app.use(express.urlencoded({ extended: false }));
 
-    this.app.use(loggerMiddleware);
+    this.app.use(requestLoggerMiddleware);
   }
 
   private initializeErrorHandling() {
