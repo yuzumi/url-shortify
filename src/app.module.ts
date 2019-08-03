@@ -3,7 +3,7 @@ import config from 'config';
 import mongoose from 'mongoose';
 
 import loggerMiddleware from './middleware/logger.middleware';
-import errorMiddleware from './middleware/error.midleware';
+import errorHandlerMiddleware from './middleware/errorHandler.midleware';
 
 import Controller from './interfaces/controller.interface';
 
@@ -29,7 +29,7 @@ export default class App {
   }
 
   private initializeErrorHandling() {
-    this.app.use(errorMiddleware);
+    this.app.use(errorHandlerMiddleware);
   }
 
   private initializeControllers(controllers: Controller[]): void {
@@ -43,11 +43,11 @@ export default class App {
       const uri: string = config.get('database.uri');
 
       await mongoose.connect(uri, { useNewUrlParser: true });
-  
+
       console.log('Database connected');
     } catch (error) {
       console.error(error.message);
-      process.exit(1);    
+      process.exit(1);
     }
   }
 
